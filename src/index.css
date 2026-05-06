@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-gray-50: #f9fafb;
+}
+
+@layer base {
+  body {
+    @apply bg-[#F0F7FF] text-gray-800 font-sans min-h-screen overflow-x-hidden;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer components {
+  .aurora-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background-color: #F8FAFC;
+  }
+  
+  .aurora-bg::before, .aurora-bg::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.4;
+    animation: drift 20s infinite alternate ease-in-out;
+  }
+
+  .aurora-bg::before {
+    background: radial-gradient(circle, #38bdf8, transparent 70%);
+    top: -10%;
+    left: -10%;
+  }
+
+  .aurora-bg::after {
+    background: radial-gradient(circle, #34d399, transparent 70%);
+    bottom: -10%;
+    right: -10%;
+    animation-delay: -10s;
+  }
+
+  @keyframes drift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(10%, 10%); }
+  }
+
+  .glass-bento {
+    @apply bg-white/70 backdrop-blur-xl border border-white rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.04)];
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-2xl border-r border-b border-white shadow-[0_8px_32px_rgba(0,0,0,0.04)];
+  }
+
+  .glass-bento-hover {
+    @apply hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(14,165,233,0.1)] hover:bg-white/90;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login as loginApi } from '../api/userApi';
+import logo from '../assets/logoo.jpeg';
 import { Lock, User, Loader2, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
@@ -17,6 +18,13 @@ export default function LoginPage() {
 
     try {
       const data = await loginApi(npk, password);
+      
+      const allowedRoles = ['ADMIN', 'HEAD', 'STAFF'];
+      if (!allowedRoles.includes(data.user.role)) {
+        setError('Akses ditolak. Anda tidak memiliki izin untuk mengakses aplikasi ini.');
+        return;
+      }
+
       localStorage.setItem('access_token', data.accessToken);
       localStorage.setItem('refresh_token', data.refreshToken);
       localStorage.setItem('user_info', JSON.stringify(data.user));
@@ -33,8 +41,8 @@ export default function LoginPage() {
       <div className="max-w-md w-full">
         {/* Logo & Header */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200">
-            <span className="text-white text-3xl font-bold italic">K</span>
+          <div className="mx-auto mb-4 flex justify-center">
+            <img src={logo} alt="KMMA Logo" className="w-24 h-auto object-contain" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900">KMMA Admin</h1>
           <p className="text-gray-500 mt-2">Selamat datang kembali! Silakan masuk ke akun Anda.</p>

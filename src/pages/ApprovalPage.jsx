@@ -93,8 +93,16 @@ export default function ApprovalPage() {
                   <td colSpan="7" className="px-6 py-12 text-center text-red-500">
                     <div className="flex flex-col items-center gap-3">
                       <AlertCircle size={32} />
-                      <p className="font-bold">Gagal memuat data</p>
-                      <p className="text-xs">{error.message}</p>
+                      <p className="font-bold">
+                        {error.response?.status === 403 
+                          ? "Akses Ditolak" 
+                          : "Gagal memuat data"}
+                      </p>
+                      <p className="text-xs">
+                        {error.response?.status === 403 
+                          ? "Anda tidak memiliki izin untuk mengakses data persetujuan pinjaman." 
+                          : error.message}
+                      </p>
                     </div>
                   </td>
                 </tr>

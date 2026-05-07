@@ -24,11 +24,19 @@ export default function PendingLoans() {
   }
 
   if (error) {
+    const isForbidden = error.response?.status === 403;
     return (
       <div className="glass-bento p-6">
         <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium flex items-center gap-3">
           <AlertCircle size={20} />
-          Gagal mengambil data: {error.message}
+          <div>
+            <p className="font-bold">{isForbidden ? "Akses Ditolak" : "Gagal mengambil data"}</p>
+            <p className="text-xs opacity-80">
+              {isForbidden 
+                ? "Anda tidak memiliki izin untuk melihat pengajuan pinjaman." 
+                : error.message}
+            </p>
+          </div>
         </div>
       </div>
     );

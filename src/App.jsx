@@ -8,6 +8,8 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
 import SyncPage from './pages/SyncPage';
 import MemberPage from './pages/MemberPage';
+import LoanCategoryPage from './pages/LoanCategoryPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -18,12 +20,25 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<DashboardPage />} />
-            <Route path="/anggota" element={<MemberPage />} />
-            <Route path="/persetujuan" element={<ApprovalPage />} />
+            
+            {/* HEAD & ADMIN Access */}
+            <Route element={<ProtectedRoute allowedRoles={['HEAD', 'ADMIN']} />}>
+              <Route path="/anggota" element={<MemberPage />} />
+              <Route path="/kategori-pinjaman" element={<LoanCategoryPage />} />
+            </Route>
+
+            {/* HEAD Only Access */}
+            <Route element={<ProtectedRoute allowedRoles={['HEAD']} />}>
+              <Route path="/persetujuan" element={<ApprovalPage />} />
+            </Route>
+
             <Route path="/keuangan" element={<FinancePage />} />
             <Route path="/sinkronisasi" element={<SyncPage />} />
           </Route>
         </Route>
+
+        {/* Catch-all 404 Route */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

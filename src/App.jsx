@@ -24,11 +24,6 @@ function App() {
             {/* HEAD & ADMIN Access */}
             <Route element={<ProtectedRoute allowedRoles={['HEAD', 'ADMIN']} />}>
               <Route path="/anggota" element={<MemberPage />} />
-              <Route path="/kategori-pinjaman" element={<LoanCategoryPage />} />
-            </Route>
-
-            {/* HEAD Only Access */}
-            <Route element={<ProtectedRoute allowedRoles={['HEAD']} />}>
               <Route path="/persetujuan" element={<ApprovalPage />} />
             </Route>
 

@@ -4,6 +4,7 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'x-api-key': import.meta.env.VITE_API_KEY,
   },
 });
 
@@ -14,6 +15,9 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+
+    
     return config;
   },
   (error) => {

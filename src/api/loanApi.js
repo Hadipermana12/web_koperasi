@@ -19,8 +19,7 @@ export const useUpdateLoanStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ loanId, status, note }) => {
-      // Endpoint asumsi berdasarkan pola sebelumnya
-      const { data } = await axiosInstance.patch(`/loans/${loanId}/status`, { status, note });
+      const { data } = await axiosInstance.patch(`/loans/${loanId}/approve`, { status, note });
       return data;
     },
     onSuccess: () => {
@@ -58,8 +57,9 @@ export const useUpdateLoanCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, payload }) => {
+      // payload includes: name, maxAmount, maxTenor, interestRate, isRequiredUpload
       const { data } = await axiosInstance.patch(`/loans/categories/${id}`, payload);
-      return data; // Return whole data: { status, message } or { status, data }
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loans', 'categories'] });

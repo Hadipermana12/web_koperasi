@@ -25,10 +25,10 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={['HEAD', 'ADMIN']} />}>
               <Route path="/anggota" element={<MemberPage />} />
               <Route path="/persetujuan" element={<ApprovalPage />} />
+              <Route path="/kategori-pinjaman" element={<LoanCategoryPage />} />
             </Route>
 
             <Route path="/keuangan" element={<FinancePage />} />
-            <Route path="/sinkronisasi" element={<SyncPage />} />
           </Route>
         </Route>
 

@@ -106,12 +106,12 @@ export default function LoanCategoryPage() {
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-1 bg-[#76bc21] rounded-full"></div>
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Parameter Keuangan</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">Parameter Keuangan</span>
           </div>
           <h1 className="text-5xl font-black tracking-tighter text-slate-900 leading-tight">
             Kategori <span className="text-gradient-blue">Pinjaman</span>
           </h1>
-          <p className="text-slate-400 font-medium text-lg mt-2 max-w-md">Konfigurasi produk pinjaman, plafon, dan suku bunga KMMA.</p>
+          <p className="text-slate-600 font-medium text-lg mt-2 max-w-md">Konfigurasi produk pinjaman, plafon, dan suku bunga KMMA.</p>
         </div>
         <div className="flex gap-4 relative z-10">
           <button 
@@ -150,69 +150,71 @@ export default function LoanCategoryPage() {
           </div>
         ) : categories && categories.length > 0 ? (
           categories.map((category) => (
-            <div key={category.id} className="group relative bg-white/60 backdrop-blur-xl border border-white rounded-[2.5rem] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_70px_rgba(0,91,183,0.1)] transition-all duration-700 hover:-translate-y-3 overflow-hidden flex flex-col gap-8">
-              {/* Card Decor */}
-              <div className="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all duration-1000 group-hover:scale-150"></div>
+            <div key={category.id} className="group relative bg-[#f8fafc] border border-slate-200 rounded-[2.5rem] p-4 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 flex flex-col min-h-[320px]">
               
-              <div className="flex justify-between items-start relative z-10">
-                <div className="w-16 h-16 bg-blue-50 text-[#005bb7] rounded-[1.5rem] flex items-center justify-center transition-all duration-700 group-hover:bg-[#005bb7] group-hover:text-white group-hover:rotate-6 group-hover:scale-110 shadow-sm border border-blue-100/50">
-                  <FileText size={32} />
-                </div>
-                <div className="text-right">
-                  <div className="badge-elegant bg-blue-50 text-[#005bb7] border-blue-100 mb-2 inline-block">
-                    {category.code}
+              {/* Header: Title & Code (Bento Box 1) */}
+              <div className="bg-white rounded-[2rem] p-6 mb-4 flex justify-between items-start border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                <div>
+                  <div className="inline-flex items-center px-2.5 py-1 rounded-xl bg-blue-50 text-[#005bb7] mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest">{category.code}</span>
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tighter leading-none group-hover:text-gradient-blue transition-all duration-700">{category.name}</h3>
+                  <h3 className="text-xl font-black text-slate-900 tracking-tight leading-none group-hover:text-[#005bb7] transition-colors">{category.name}</h3>
+                </div>
+                <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-[#76bc21] group-hover:bg-green-50 transition-colors">
+                  <FileText size={18} />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 relative z-10">
-                <div className="bg-white/80 p-4 rounded-2xl border border-slate-100 shadow-sm group-hover:border-blue-100 transition-colors duration-500">
-                  <div className="flex items-center gap-2 text-slate-400 mb-1.5">
-                    <DollarSign size={14} className="text-blue-500" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Max Plafon</span>
+              {/* Data Grid (Bento Boxes 2 & 3) */}
+              <div className="flex-1 grid grid-cols-2 gap-4 mb-4">
+                <div className="flex flex-col justify-between p-6 rounded-[2rem] bg-white border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                  <div className="flex items-center gap-2 text-slate-500">
+                    <TrendingUp size={16} className="text-[#76bc21]" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Suku Bunga</span>
                   </div>
-                  <p className="text-lg font-black text-slate-900 tracking-tight">{formatCurrency(category.maxAmount)}</p>
-                </div>
-                <div className="bg-white/80 p-4 rounded-2xl border border-slate-100 shadow-sm group-hover:border-blue-100 transition-colors duration-500">
-                  <div className="flex items-center gap-2 text-slate-400 mb-1.5">
-                    <Calendar size={14} className="text-green-500" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Max Tenor</span>
+                  <div className="flex items-baseline gap-1 mt-6">
+                    <span className="text-3xl font-black text-slate-900 tracking-tighter">{category.interestRate}</span>
+                    <span className="text-sm font-bold text-slate-400">%</span>
                   </div>
-                  <p className="text-lg font-black text-slate-900 tracking-tight">{category.maxTenor} <span className="text-xs text-slate-400">Bln</span></p>
                 </div>
-                <div className="bg-gradient-to-r from-[#005bb7] to-[#00a8e8] p-5 rounded-2xl shadow-lg shadow-blue-900/10 col-span-2 relative overflow-hidden group/rate">
-                  <div className="absolute right-0 top-0 w-24 h-24 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-1000 group-hover/rate:scale-150"></div>
-                  <div className="flex items-center justify-between relative z-10">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
-                        <TrendingUp size={20} />
-                      </div>
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-50">Suku Bunga Efektif</span>
-                    </div>
-                    <p className="text-3xl font-black text-white tracking-tighter">{category.interestRate}% <span className="text-xs font-bold text-blue-100/60">/ Thn</span></p>
+                
+                <div className="flex flex-col justify-between p-6 rounded-[2rem] bg-white border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                  <div className="flex items-center gap-2 text-slate-500">
+                    <Calendar size={16} className="text-[#005bb7]" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Tenor Maks</span>
+                  </div>
+                  <div className="flex items-baseline gap-1 mt-6">
+                    <span className="text-3xl font-black text-slate-900 tracking-tighter">{category.maxTenor}</span>
+                    <span className="text-sm font-bold text-slate-400">Bln</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-4 relative z-10 pt-2">
+              {/* Maks Plafon (Bento Box 4) */}
+              <div className="bg-white rounded-[2rem] p-6 mb-4 flex items-center justify-between border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+                    <DollarSign size={14} className="text-slate-400" />
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Maksimum Plafon</span>
+                </div>
+                <span className="text-xl font-black tracking-tight text-slate-900">{formatCurrency(category.maxAmount)}</span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 mt-auto">
                 <button 
                   onClick={() => handleEdit(category)}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 rounded-[1.25rem] text-xs font-black uppercase tracking-widest text-slate-600 bg-white border border-slate-200 hover:border-[#005bb7] hover:text-[#005bb7] transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-blue-900/5"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 rounded-[1.5rem] text-xs font-bold uppercase tracking-widest text-slate-600 bg-white border border-slate-200 hover:bg-[#005bb7] hover:text-white hover:border-[#005bb7] shadow-sm transition-all duration-300 group/btn"
                 >
-                  <Edit3 size={16} />
+                  <Edit3 size={14} className="group-hover/btn:scale-110 transition-transform" />
                   Edit Detail
                 </button>
                 <button 
                   onClick={() => handleDelete(category.id)}
-                  disabled={deleteMutation.isPending}
-                  className="w-14 h-14 flex items-center justify-center rounded-[1.25rem] text-red-400 border border-red-50 hover:bg-red-50 hover:text-red-600 transition-all duration-500 disabled:opacity-50"
+                  className="w-14 h-14 flex items-center justify-center rounded-[1.5rem] text-red-400 bg-white border border-red-100 hover:bg-red-500 hover:text-white shadow-sm transition-all duration-300"
                 >
-                  {deleteMutation.isPending && deleteMutation.variables === category.id ? (
-                    <Loader2 size={20} className="animate-spin" />
-                  ) : (
-                    <Trash2 size={20} />
-                  )}
+                  <Trash2 size={18} />
                 </button>
               </div>
             </div>
@@ -236,7 +238,7 @@ export default function LoanCategoryPage() {
                 </div>
                 <div>
                   <h2 className="text-3xl font-black text-slate-900 tracking-tighter">{editId ? "Edit Konfigurasi" : "Produk Baru"}</h2>
-                  <p className="text-sm font-medium text-slate-400 mt-1">{editId ? "Perbarui parameter produk pinjaman" : "Definisikan parameter pinjaman KMMA baru"}</p>
+                  <p className="text-sm font-medium text-slate-500 mt-1">{editId ? "Perbarui parameter produk pinjaman" : "Definisikan parameter pinjaman KMMA baru"}</p>
                 </div>
               </div>
               <button 

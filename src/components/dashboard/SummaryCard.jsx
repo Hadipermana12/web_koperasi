@@ -44,10 +44,10 @@ export default function SummaryCard({
       </div>
       
       <div className="relative z-10">
-        <h3 className="text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] mb-2">{title}</h3>
+        <h3 className="text-slate-600 font-black text-[10px] uppercase tracking-[0.2em] mb-2">{title}</h3>
         <div className="flex items-baseline gap-2">
           <p className="text-4xl font-black text-slate-900 tracking-tighter">{value}</p>
-          <span className="text-xs font-bold text-slate-400">{trendText}</span>
+          <span className="text-xs font-bold text-slate-500">{trendText}</span>
         </div>
       </div>
     </div>

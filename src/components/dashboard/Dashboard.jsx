@@ -55,7 +55,7 @@ export default function Dashboard() {
       {/* Title Section */}
       <div className="mb-2">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Dashboard Overview</h1>
-        <p className="text-gray-500 text-sm tracking-wide">Selamat datang kembali! Berikut ringkasan aktivitas koperasi hari ini.</p>
+        <p className="text-gray-700 text-sm font-bold tracking-wide">Selamat datang kembali! Berikut ringkasan aktivitas koperasi hari ini.</p>
       </div>
 
       {/* Summary Cards */}
@@ -109,7 +109,7 @@ export default function Dashboard() {
           <div className="flex justify-between items-center mb-6">
             <div>
               <h3 className="text-lg font-bold text-gray-900">Tren Transaksi</h3>
-              <p className="text-sm text-gray-500">Data transaksi 7 bulan terakhir</p>
+              <p className="text-sm text-gray-700 font-bold">Data transaksi 7 bulan terakhir</p>
             </div>
             <button className="flex items-center gap-2 border border-white rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-white/50 transition-colors bg-white/30">
               7 Bulan Terakhir
@@ -124,13 +124,13 @@ export default function Dashboard() {
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fill: '#6b7280', fontSize: 12 }} 
+                  tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 'bold' }} 
                   dy={10}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fill: '#6b7280', fontSize: 12 }} 
+                  tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 'bold' }} 
                   ticks={[0, 45, 90, 135, 180]}
                   domain={[0, 180]}
                 />
@@ -188,7 +188,7 @@ export default function Dashboard() {
                 <div key={index} className="flex justify-between items-center bg-white/60 rounded-lg px-3 py-2 border border-white">
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 rounded-full shadow-[0_2px_4px_currentColor]" style={{ backgroundColor: item.color, color: item.color }}></div>
-                    <span className="text-sm font-medium text-gray-600">{item.name}</span>
+                    <span className="text-sm font-bold text-gray-700">{item.name}</span>
                   </div>
                   <span className="text-sm font-bold text-gray-900">{item.value}</span>
                 </div>

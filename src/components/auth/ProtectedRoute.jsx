@@ -6,7 +6,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
   const userRole = userInfo.role;
   
-  const globalAllowedRoles = ['ADMIN', 'HEAD', 'STAFF'];
+  const globalAllowedRoles = ['ADMIN', 'HEAD', 'STAFF', 'KEPALA_KOPERASI', 'KETUA_KOPERASI', 'FINANCE'];
 
   if (!token) {
     return <Navigate to="/login" replace />;

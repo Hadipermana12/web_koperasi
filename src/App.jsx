@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<DashboardPage />} />
             
             {/* HEAD & ADMIN Access */}
-            <Route element={<ProtectedRoute allowedRoles={['HEAD', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute allowedRoles={['HEAD', 'ADMIN', 'KEPALA_KOPERASI', 'KETUA_KOPERASI', 'FINANCE']} />}>
               <Route path="/anggota" element={<MemberPage />} />
               <Route path="/persetujuan" element={<ApprovalPage />} />
               <Route path="/kategori-pinjaman" element={<LoanCategoryPage />} />

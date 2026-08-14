@@ -29,7 +29,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const token = localStorage.getItem('access_token');
+    const isMockToken = token && token.startsWith('mock-token-');
+
+    if (error.response?.status === 401 && !isMockToken) {
       // Clear token and redirect to login
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');

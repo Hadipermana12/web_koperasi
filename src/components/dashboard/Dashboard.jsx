@@ -1,25 +1,10 @@
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
 import { 
-  Users, 
-  Clock, 
-  FileText, 
-  Wallet,
-  ChevronDown
-} from 'lucide-react';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell
 } from 'recharts';
 import SummaryCard from './SummaryCard';
-import RecentActivities from './RecentActivities';
 import RegisteredUsers from './RegisteredUsers';
 import PendingLoans from './PendingLoans';
 import { useUsers, usePendingUsers } from '../../api/userApi';
@@ -45,165 +30,116 @@ export default function Dashboard() {
   const totalPendingLoans = pendingLoans?.length || 0;
 
   const pieChartData = [
-    { name: 'Disetujui', value: 156, color: '#22c55e' }, // green-500
-    { name: 'Pending', value: totalPendingLoans, color: '#f59e0b' },
-    { name: 'Ditolak', value: 12, color: '#ef4444' },
+    { name: 'Disetujui', value: 156, color: '#76bc21' },
+    { name: 'Pending',   value: totalPendingLoans, color: '#f59e0b' },
+    { name: 'Ditolak',   value: 12,  color: '#ef4444' },
   ];
 
+  const totalProcessed = 156 + 12; // Disetujui + Ditolak
+  const approvalRate = totalProcessed > 0 ? Math.round((156 / (156 + 12)) * 100) : 100;
+
   return (
-    <div className="flex flex-col gap-6">
-      {/* Title Section */}
-      <div className="mb-2">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Dashboard Overview</h1>
-        <p className="text-gray-700 text-sm font-bold tracking-wide">Selamat datang kembali! Berikut ringkasan aktivitas koperasi hari ini.</p>
+    <div className="flex flex-col gap-4">
+      {/* Page Title */}
+      <div>
+        <h1 className="text-xl font-bold text-slate-800">Dashboard Overview</h1>
+        <p className="text-xs text-slate-400 mt-0.5">Selamat datang kembali! Berikut ringkasan aktivitas koperasi hari ini.</p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <SummaryCard 
-          title="Total Anggota Aktif"
+          title="Approval Status"
+          value={totalPendingUsers.toLocaleString()}
+          trend={totalPendingUsers > 0 ? `+${totalPendingUsers}` : 'Clear'}
+          isPositive={totalPendingUsers === 0}
+          trendText="Anggota pending verifikasi"
+          to="/anggota?tab=pending"
+        />
+        <SummaryCard 
+          title="Total Anggota"
           value={totalUsers.toLocaleString()}
           trend="+12.5%"
           isPositive={true}
-          trendText="vs bulan lalu"
-          icon={Users}
-          iconColor="text-green-500"
-          iconBg="bg-green-50"
+          trendText="vs bln lalu"
+          to="/anggota?tab=all"
         />
         <SummaryCard 
-          title="Menunggu Verifikasi"
-          value={totalPendingUsers.toLocaleString()}
-          trend={totalPendingUsers > 0 ? `+${totalPendingUsers} baru` : 'Semua clear'}
-          isPositive={totalPendingUsers === 0}
-          trendText="dari Mobile App"
-          icon={Clock}
-          iconColor={totalPendingUsers > 0 ? 'text-yellow-600' : 'text-gray-400'}
-          iconBg={totalPendingUsers > 0 ? 'bg-yellow-50' : 'bg-gray-50'}
-        />
-        <SummaryCard 
-          title="Persetujuan Pinjaman"
+          title="Approval Pinjaman"
           value={totalPendingLoans.toLocaleString()}
-          trend={totalPendingLoans > 0 ? `${totalPendingLoans} pending` : 'Semua aman'}
+          trend={totalPendingLoans > 0 ? `${totalPendingLoans} pending` : 'Aman'}
           isPositive={totalPendingLoans === 0}
           trendText="butuh tindakan"
-          icon={FileText}
-          iconColor={totalPendingLoans > 0 ? 'text-blue-600' : 'text-gray-400'}
-          iconBg={totalPendingLoans > 0 ? 'bg-blue-50' : 'bg-gray-50'}
+          to="/persetujuan"
         />
         <SummaryCard 
           title="Saldo Koperasi"
           value="Rp 2.4M"
           trend="+15.3%"
           isPositive={true}
-          trendText="vs bulan lalu"
-          icon={Wallet}
-          iconColor="text-purple-500"
-          iconBg="bg-purple-50"
+          trendText="vs bln lalu"
+          to="/keuangan"
         />
       </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Line Chart */}
-        <div className="lg:col-span-2 glass-bento glass-bento-hover p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="lg:col-span-2 bg-white border border-slate-100 rounded-xl p-4 shadow-sm min-w-0">
+          <div className="flex justify-between items-center mb-3">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Tren Transaksi</h3>
-              <p className="text-sm text-gray-700 font-bold">Data transaksi 7 bulan terakhir</p>
+              <h3 className="text-sm font-bold text-slate-800">Tren Transaksi</h3>
+              <p className="text-[10px] text-slate-400">7 bulan terakhir</p>
             </div>
-            <button className="flex items-center gap-2 border border-white rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-white/50 transition-colors bg-white/30">
-              7 Bulan Terakhir
-              <ChevronDown size={16} />
+            <button className="flex items-center gap-1 border border-slate-100 rounded-lg px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors bg-white">
+              7 Bulan <ChevronDown size={12} />
             </button>
           </div>
-          <div className="h-72 w-full">
+          <div className="h-48 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={lineChartData} margin={{ top: 5, right: 20, bottom: 5, left: -20 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 'bold' }} 
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 'bold' }} 
-                  ticks={[0, 45, 90, 135, 180]}
-                  domain={[0, 180]}
-                />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)', color: '#1f2937' }}
-                  itemStyle={{ color: '#3b82f6' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke="#3b82f6" 
-                  strokeWidth={3}
-                  style={{ filter: 'drop-shadow(0px 4px 6px rgba(59, 130, 246, 0.3))' }}
-                  dot={{ fill: '#ffffff', stroke: '#3b82f6', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, fill: '#3b82f6', stroke: '#fff' }}
-                />
+              <LineChart data={lineChartData} margin={{ top: 5, right: 10, bottom: 5, left: -25 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#cbd5e1" strokeOpacity={0.7} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 10, fontFamily: 'Poppins' }} dy={8} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 10, fontFamily: 'Poppins' }} domain={[0, 100]} />
+                <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.08)', fontSize: '11px' }} />
+                <Line type="monotone" dataKey="value" stroke="#005bb7" strokeWidth={2} dot={{ fill: '#fff', stroke: '#005bb7', strokeWidth: 2, r: 3 }} activeDot={{ r: 4, fill: '#005bb7' }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Donut Chart */}
-        <div className="glass-bento glass-bento-hover p-6 flex flex-col">
-          <h3 className="text-lg font-bold text-gray-900 mb-6">Status Pinjaman</h3>
-          
-          <div className="flex-1 flex flex-col justify-center">
-            <div className="h-48 w-full relative mb-6">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={3}
-                    dataKey="value"
-                    stroke="none"
-                    style={{ filter: 'drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))' }}
-                  >
-                    {pieChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)', color: '#1f2937' }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Legend */}
-            <div className="flex flex-col gap-3">
-              {pieChartData.map((item, index) => (
-                <div key={index} className="flex justify-between items-center bg-white/60 rounded-lg px-3 py-2 border border-white">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full shadow-[0_2px_4px_currentColor]" style={{ backgroundColor: item.color, color: item.color }}></div>
-                    <span className="text-sm font-bold text-gray-700">{item.name}</span>
-                  </div>
-                  <span className="text-sm font-bold text-gray-900">{item.value}</span>
+        <div className="bg-white border border-slate-100 rounded-xl p-4 shadow-sm flex flex-col min-w-0">
+          <h3 className="text-sm font-bold text-slate-800 mb-3">Status Pinjaman</h3>
+          <div className="h-36 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={pieChartData} cx="50%" cy="50%" innerRadius={40} outerRadius={55} paddingAngle={2} dataKey="value" stroke="none">
+                  {pieChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #f1f5f9', fontSize: '11px' }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex flex-col gap-1.5 mt-2">
+            {pieChartData.map((item, index) => (
+              <div key={index} className="flex justify-between items-center px-2 py-1 bg-slate-50 rounded-lg">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className="text-[10px] font-medium text-slate-600">{item.name}</span>
                 </div>
-              ))}
-            </div>
+                <span className="text-[10px] font-bold text-slate-700">{item.value}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Lower Bento Boxes */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Registered Users (Real-time Sync) */}
+      {/* Bottom Tables */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <RegisteredUsers />
-
-        {/* Pending Loans Section */}
         <PendingLoans />
       </div>
     </div>

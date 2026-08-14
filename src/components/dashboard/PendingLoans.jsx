@@ -4,11 +4,7 @@ import { FileText, Loader2, Clock, Eye, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const formatCurrency = (value) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0
-  }).format(value);
+  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
 };
 
 export default function PendingLoans() {
@@ -16,9 +12,9 @@ export default function PendingLoans() {
 
   if (isLoading) {
     return (
-      <div className="glass-bento p-12 flex flex-col items-center justify-center">
-        <Loader2 className="animate-spin text-blue-500 mb-4" size={32} />
-        <p className="text-gray-500 font-medium">Memuat pengajuan pinjaman...</p>
+      <div className="bg-white border border-slate-100 rounded-xl p-8 flex items-center justify-center shadow-sm">
+        <Loader2 className="animate-spin text-[#005bb7] mr-2" size={18} />
+        <p className="text-slate-400 text-xs">Memuat data...</p>
       </div>
     );
   }
@@ -26,85 +22,79 @@ export default function PendingLoans() {
   if (error) {
     const isForbidden = error.response?.status === 403;
     return (
-      <div className="glass-bento p-6">
-        <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium flex items-center gap-3">
-          <AlertCircle size={20} />
-          <div>
-            <p className="font-bold">{isForbidden ? "Akses Ditolak" : "Gagal mengambil data"}</p>
-            <p className="text-xs opacity-80">
-              {isForbidden 
-                ? "Anda tidak memiliki izin untuk melihat pengajuan pinjaman." 
-                : error.message}
-            </p>
-          </div>
+      <div className="bg-white border border-slate-100 rounded-xl p-4 shadow-sm">
+        <div className="bg-red-50 border border-red-100 text-red-500 p-3 rounded-lg text-xs flex items-center gap-2">
+          <AlertCircle size={14} />
+          <p>{isForbidden ? 'Akses Ditolak - Tidak ada izin.' : error.message}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="glass-bento overflow-hidden flex flex-col">
-      <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-blue-50/60">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <FileText size={18} className="text-blue-600" />
-            <h2 className="text-lg font-bold text-gray-900">Persetujuan Pinjaman</h2>
+    <div className="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden flex flex-col">
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-slate-100 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <FileText size={14} className="text-[#005bb7]" />
+          <div>
+            <h2 className="text-sm font-bold text-slate-800 leading-tight">Approval Pinjaman</h2>
+            <p className="text-[10px] text-slate-400">Pengajuan terbaru butuh persetujuan</p>
           </div>
-          <p className="text-sm text-gray-500">Pengajuan pinjaman terbaru yang butuh persetujuan</p>
         </div>
-        <Link 
-          to="/persetujuan" 
-          className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-white border border-blue-100 px-3 py-1.5 rounded-lg shadow-sm transition-all"
+        <Link
+          to="/persetujuan"
+          className="text-[10px] font-semibold text-[#005bb7] hover:underline"
         >
           Lihat Semua
         </Link>
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto flex-1">
         <table className="w-full text-left">
           <thead>
-            <tr className="text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-50/50">
-              <th className="px-6 py-4">Pemohon</th>
-              <th className="px-6 py-4 text-right">Jumlah</th>
-              <th className="px-6 py-4 text-right">Aksi</th>
+            <tr className="bg-slate-50 border-b border-slate-100">
+              <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Pemohon</th>
+              <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 text-right">Jumlah</th>
+              <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 text-right">Aksi</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-slate-50">
             {loans && loans.length > 0 ? (
               loans.slice(0, 5).map((loan) => (
-                <tr key={loan.id} className="hover:bg-blue-50/30 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
+                <tr key={loan.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-4 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-blue-100 text-[#005bb7] flex items-center justify-center font-bold text-xs flex-shrink-0">
                         {loan.user?.name?.charAt(0) ?? '?'}
                       </div>
                       <div>
-                        <div className="font-bold text-gray-900 text-sm">{loan.user?.name}</div>
-                        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">NPK: {loan.user?.npk}</div>
+                        <div className="font-semibold text-slate-800 text-xs">{loan.user?.name}</div>
+                        <div className="text-[10px] text-slate-400">NPK: {loan.user?.npk}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="font-bold text-gray-900 text-sm">{formatCurrency(loan.amount)}</div>
-                    <div className="text-[10px] text-gray-400 font-medium tracking-tight uppercase">{loan.tenor} Bulan</div>
+                  <td className="px-4 py-2.5 text-right">
+                    <div className="font-semibold text-slate-800 text-xs">{formatCurrency(loan.amount)}</div>
+                    <div className="text-[10px] text-slate-400">{loan.tenor} Bulan</div>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <Link 
+                  <td className="px-4 py-2.5 text-right">
+                    <Link
                       to="/persetujuan"
-                      className="inline-flex items-center gap-1 text-xs font-bold text-green-600 hover:text-green-700"
+                      className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#76bc21] hover:text-[#68a61d]"
                     >
-                      <Eye size={12} />
-                      Detail
+                      <Eye size={11} /> Detail
                     </Link>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="px-6 py-12 text-center">
-                  <div className="flex flex-col items-center gap-3 text-gray-400">
-                    <Clock size={36} className="text-gray-200" />
-                    <p className="text-sm font-medium">Tidak ada pengajuan pinjaman pending</p>
+                <td colSpan="3" className="px-4 py-10 text-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <Clock size={28} className="text-slate-200" />
+                    <p className="text-xs text-slate-400">Tidak ada pengajuan pending</p>
                   </div>
                 </td>
               </tr>
